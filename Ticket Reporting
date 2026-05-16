@@ -1,1 +1,96 @@
+SELECT database();
+
+USE it_ticket_report
+
+________________________________________________________________________
+CREATE a tables for technicians, employees, ticket category and tickets
+________________________________________________________________________
+
+
+CREATE TABLE users (
+	user_id INT PRIMARY KEY,
+    full_name VARCHAR (100),
+    department VARCHAR (100),
+    location VARCHAR (100)
+    );
+
+CREATE TABLE techs (
+	tech_id INT PRIMARY KEY,
+    tech_name VARCHAR (100),
+    team VARCHAR(100)
+    );
+    
+CREATE TABLE categories (
+	category_id INT PRIMARY KEY,
+    category_name VARCHAR (100)
+    );
+
+CREATE TABLE tickets (
+	ticket_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    tech_id INT,
+    category_id INT,
+    priority VARCHAR(50),
+    status VARCHAR(50),
+    created_at TIMESTAMP,
+    resolved_at TIMESTAMP,
+    sla_hours INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (tech_id) REFERENCES techs(tech_id),
+    FOREIGN KEY (category_id) REFERENCES categories(category_id)
+    );
+
+_________________________
+Add data into the tables
+_________________________
+    
+INSERT INTO users (	user_id, full_name, department, location) VALUES
+(1, 'Jane Doe', 'Finance', 'Dallas'),
+(2, 'Jose Lopez', 'HR', 'Houston'),
+(3, 'Mac Miller', 'Operations', 'Austin');
+
+Select * from users;
+
+INSERT INTO techs (tech_id, tech_name, team) VALUES
+(1, 'Johnson Smith', 'Helpdesk'),
+(2, 'Kevin Nguyen', 'Infrastructure'),
+(3, 'David Ortiz', 'Helpdesk'); 
+
+SELECT * from techs;
+
+INSERT INTO categories (category_id, category_name) VALUES
+(1, 'Password reset'),
+(2, 'Software'),
+(3, 'Hardware'),
+(4, 'Network'),
+(5, 'Access Request');
+
+SELECT * FROM categories;
+
+INSERT INTO tickets (ticket_id, user_id, tech_id, category_id, priority, status, created_at,
+resolved_at, sla_hours) VALUES
+(1001, 1, 1, 1, 'Low', 'Resolved', '2025-01-01 08:00:00', '2025-01-01 09:00:00', 4),
+(1002, 2, 3, 2, 'High', 'Resolved', '2025-01-02 10:30:00', '2025-01-01 14:00:00', 8),
+(1003, 3, 2, 4, 'Medium', 'Open', '2025-01-03 11:15:00', NULL, 6);
+
+______________________________________________________
+Count how many tickets exist for each ticket category
+______________________________________________________
+
+
+SELECT c.category_name, COUNT(*) as TICKET_COUNT
+from tickets t
+JOIN categories c ON t.category_id = c.category_id
+GROUP BY c.category_name;
+
+______________________
+FIND average SLA time
+______________________
+
+Select AVG(SLA_HOURS) avg_sla
+from tickets
+
+select * from techs
+
+
 
